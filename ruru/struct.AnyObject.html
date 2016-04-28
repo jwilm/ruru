@@ -46,7 +46,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-149' class='srclink' href='../src/ruru/class/any_object.rs.html#81-83' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-137' class='srclink' href='../src/ruru/src/class/any_object.rs.html#73-75' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct AnyObject {
     // some fields omitted
 }</pre><div class='docblock'><p>Representation of any Ruby object while its type is unknown</p>
@@ -66,15 +66,17 @@ of the object. It happens in the following cases:</p>
 using functions below.</p>
 
 <h1 id='examples' class='section-header'><a href='#examples'>Examples</a></h1>
-<h2 id='retrieving-an-object-from-array' class='section-header'><a href='#retrieving-an-object-from-array'>Retrieving an object from <code>Array</code></a></h2><pre class='rust rust-example-rendered'>
+<h2 id='retrieving-an-object-from-array' class='section-header'><a href='#retrieving-an-object-from-array'>Retrieving an object from <code>Array</code></a></h2>
+<pre class='rust rust-example-rendered'>
 <span class='kw'>use</span> <span class='ident'>ruru</span>::{<span class='ident'>Array</span>, <span class='ident'>Fixnum</span>, <span class='ident'>VM</span>};
 
 <span class='kw'>let</span> <span class='ident'>array</span> <span class='op'>=</span> <span class='ident'>Array</span>::<span class='ident'>new</span>().<span class='ident'>push</span>(<span class='ident'>Fixnum</span>::<span class='ident'>new</span>(<span class='number'>1</span>));
-<span class='kw'>let</span> <span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>array</span>.<span class='ident'>at</span>(<span class='number'>0</span>).<span class='ident'>as_fixnum</span>(); <span class='comment'>// `Array::at()` returns `AnyObject`</span>
+<span class='kw'>let</span> <span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>array</span>.<span class='ident'>at</span>(<span class='number'>0</span>).<span class='ident'>to</span>::<span class='op'>&lt;</span><span class='ident'>Fixnum</span><span class='op'>&gt;</span>(); <span class='comment'>// `Array::at()` returns `AnyObject`</span>
 
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>value</span>.<span class='ident'>to_i64</span>(), <span class='number'>1</span>);</pre>
 
-<h2 id='retrieving-an-object-from-hash' class='section-header'><a href='#retrieving-an-object-from-hash'>Retrieving an object from <code>Hash</code></a></h2><pre class='rust rust-example-rendered'>
+<h2 id='retrieving-an-object-from-hash' class='section-header'><a href='#retrieving-an-object-from-hash'>Retrieving an object from <code>Hash</code></a></h2>
+<pre class='rust rust-example-rendered'>
 <span class='kw'>use</span> <span class='ident'>ruru</span>::{<span class='ident'>Fixnum</span>, <span class='ident'>Hash</span>, <span class='ident'>Symbol</span>, <span class='ident'>VM</span>};
 
 <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>hash</span> <span class='op'>=</span> <span class='ident'>Hash</span>::<span class='ident'>new</span>();
@@ -82,11 +84,12 @@ using functions below.</p>
 <span class='ident'>hash</span>.<span class='ident'>store</span>(<span class='ident'>Symbol</span>::<span class='ident'>new</span>(<span class='string'>&quot;key&quot;</span>), <span class='ident'>Fixnum</span>::<span class='ident'>new</span>(<span class='number'>1</span>));
 
 <span class='comment'>// `Hash::at()` returns `AnyObject`</span>
-<span class='kw'>let</span> <span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>hash</span>.<span class='ident'>at</span>(<span class='ident'>Symbol</span>::<span class='ident'>new</span>(<span class='string'>&quot;key&quot;</span>)).<span class='ident'>as_fixnum</span>();
+<span class='kw'>let</span> <span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>hash</span>.<span class='ident'>at</span>(<span class='ident'>Symbol</span>::<span class='ident'>new</span>(<span class='string'>&quot;key&quot;</span>)).<span class='ident'>to</span>::<span class='op'>&lt;</span><span class='ident'>Fixnum</span><span class='op'>&gt;</span>();
 
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>value</span>, <span class='ident'>Fixnum</span>::<span class='ident'>new</span>(<span class='number'>1</span>));</pre>
 
-<h2 id='receiving-arguments-from-ruby-to-ruru-callback' class='section-header'><a href='#receiving-arguments-from-ruby-to-ruru-callback'>Receiving arguments from Ruby to Ruru callback</a></h2><pre class='rust rust-example-rendered'>
+<h2 id='receiving-arguments-from-ruby-to-ruru-callback' class='section-header'><a href='#receiving-arguments-from-ruby-to-ruru-callback'>Receiving arguments from Ruby to Ruru callback</a></h2>
+<pre class='rust rust-example-rendered'>
 <span class='kw'>use</span> <span class='ident'>ruru</span>::<span class='ident'>types</span>::<span class='ident'>Argc</span>;
 <span class='kw'>use</span> <span class='ident'>ruru</span>::{<span class='ident'>AnyObject</span>, <span class='ident'>Boolean</span>, <span class='ident'>Class</span>, <span class='ident'>RString</span>, <span class='ident'>VM</span>};
 
@@ -94,7 +97,7 @@ using functions below.</p>
 <span class='kw'>pub</span> <span class='kw'>extern</span> <span class='kw'>fn</span> <span class='ident'>string_eq</span>(<span class='ident'>argc</span>: <span class='ident'>Argc</span>, <span class='ident'>argv</span>: <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>AnyObject</span>, <span class='ident'>itself</span>: <span class='ident'>RString</span>) <span class='op'>-&gt;</span> <span class='ident'>Boolean</span> {
     <span class='comment'>// `VM::parse_arguments()` returns `Vec&lt;AnyObject&gt;`</span>
     <span class='kw'>let</span> <span class='ident'>argv</span> <span class='op'>=</span> <span class='ident'>VM</span>::<span class='ident'>parse_arguments</span>(<span class='ident'>argc</span>, <span class='ident'>argv</span>);
-    <span class='kw'>let</span> <span class='ident'>other_string</span> <span class='op'>=</span> <span class='ident'>argv</span>[<span class='number'>0</span>].<span class='ident'>as_string</span>();
+    <span class='kw'>let</span> <span class='ident'>other_string</span> <span class='op'>=</span> <span class='ident'>argv</span>[<span class='number'>0</span>].<span class='ident'>to</span>::<span class='op'>&lt;</span><span class='ident'>RString</span><span class='op'>&gt;</span>();
 
     <span class='ident'>Boolean</span>::<span class='ident'>new</span>(<span class='ident'>itself</span>.<span class='ident'>to_string</span>() <span class='op'>==</span> <span class='ident'>other_string</span>.<span class='ident'>to_string</span>())
 }
@@ -102,29 +105,28 @@ using functions below.</p>
 <span class='kw'>fn</span> <span class='ident'>main</span>() {
     <span class='ident'>Class</span>::<span class='ident'>from_existing</span>(<span class='string'>&quot;String&quot;</span>).<span class='ident'>define_method</span>(<span class='string'>&quot;==&quot;</span>, <span class='ident'>string_eq</span>);
 }</pre>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a></code></h3><div class='impl-items'><h4 id='method.as_array' class='method'><code>fn <a href='#method.as_array' class='fnname'>as_array</a>(&amp;self) -&gt; <a class='struct' href='../ruru/struct.Array.html' title='ruru::Array'>Array</a></code></h4>
-<div class='docblock'><p>Casts to <code>Array</code>.</p>
-</div><h4 id='method.as_boolean' class='method'><code>fn <a href='#method.as_boolean' class='fnname'>as_boolean</a>(&amp;self) -&gt; <a class='struct' href='../ruru/struct.Boolean.html' title='ruru::Boolean'>Boolean</a></code></h4>
-<div class='docblock'><p>Casts to <code>Boolean</code>.</p>
-</div><h4 id='method.as_class' class='method'><code>fn <a href='#method.as_class' class='fnname'>as_class</a>(&amp;self) -&gt; <a class='struct' href='../ruru/struct.Class.html' title='ruru::Class'>Class</a></code></h4>
-<div class='docblock'><p>Casts to <code>Class</code>.</p>
-</div><h4 id='method.as_fixnum' class='method'><code>fn <a href='#method.as_fixnum' class='fnname'>as_fixnum</a>(&amp;self) -&gt; <a class='struct' href='../ruru/struct.Fixnum.html' title='ruru::Fixnum'>Fixnum</a></code></h4>
-<div class='docblock'><p>Casts to <code>Fixnum</code>.</p>
-</div><h4 id='method.as_hash' class='method'><code>fn <a href='#method.as_hash' class='fnname'>as_hash</a>(&amp;self) -&gt; <a class='struct' href='../ruru/struct.Hash.html' title='ruru::Hash'>Hash</a></code></h4>
-<div class='docblock'><p>Casts to <code>Hash</code>.</p>
-</div><h4 id='method.as_string' class='method'><code>fn <a href='#method.as_string' class='fnname'>as_string</a>(&amp;self) -&gt; <a class='struct' href='../ruru/struct.RString.html' title='ruru::RString'>RString</a></code></h4>
-<div class='docblock'><p>Casts to <code>String</code>.</p>
-</div><h4 id='method.as_symbol' class='method'><code>fn <a href='#method.as_symbol' class='fnname'>as_symbol</a>(&amp;self) -&gt; <a class='struct' href='../ruru/struct.Symbol.html' title='ruru::Symbol'>Symbol</a></code></h4>
-<div class='docblock'><p>Casts to <code>Symbol</code>.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a></code></h3><div class='impl-items'><h4 id='method.to' class='method'><code>fn <a href='#method.to' class='fnname'>to</a>&lt;T: <a class='trait' href='../ruru/traits/trait.Object.html' title='ruru::traits::Object'>Object</a>&gt;(&amp;self) -&gt; T</code></h4>
+<div class='docblock'><p>Casts <code>AnyObject</code> to the specified Ruby type</p>
+
+<h1 id='examples-1' class='section-header'><a href='#examples-1'>Examples</a></h1>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>ruru</span>::{<span class='ident'>AnyObject</span>, <span class='ident'>Fixnum</span>, <span class='ident'>VM</span>};
+<span class='kw'>use</span> <span class='ident'>ruru</span>::<span class='ident'>traits</span>::<span class='ident'>Object</span>;
+
+<span class='kw'>let</span> <span class='ident'>fixnum_as_any_object</span> <span class='op'>=</span> <span class='ident'>Fixnum</span>::<span class='ident'>new</span>(<span class='number'>1</span>).<span class='ident'>to_any_object</span>();
+
+<span class='kw'>let</span> <span class='ident'>fixnum</span> <span class='op'>=</span> <span class='ident'>fixnum_as_any_object</span>.<span class='ident'>to</span>::<span class='op'>&lt;</span><span class='ident'>Fixnum</span><span class='op'>&gt;</span>();
+
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>fixnum</span>.<span class='ident'>to_i64</span>(), <span class='number'>1</span>);</pre>
 </div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='type' href='../ruru/types/type.Value.html' title='ruru::types::Value'>Value</a>&gt; for <a class='struct' href='../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a></code></h3><div class='impl-items'><h4 id='method.from' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#method.from' class='fnname'>from</a>(value: <a class='type' href='../ruru/types/type.Value.html' title='ruru::types::Value'>Value</a>) -&gt; Self</code></h4>
 </div><h3 class='impl'><code>impl <a class='trait' href='../ruru/traits/trait.Object.html' title='ruru::traits::Object'>Object</a> for <a class='struct' href='../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a></code></h3><div class='impl-items'><h4 id='method.value' class='method'><code>fn <a href='../ruru/traits/trait.Object.html#method.value' class='fnname'>value</a>(&amp;self) -&gt; <a class='type' href='../ruru/types/type.Value.html' title='ruru::types::Value'>Value</a></code></h4>
 <h4 id='method.class' class='method'><code>fn <a href='../ruru/traits/trait.Object.html#method.class' class='fnname'>class</a>(&amp;self) -&gt; <a class='struct' href='../ruru/struct.Class.html' title='ruru::Class'>Class</a></code></h4>
 <h4 id='method.send' class='method'><code>fn <a href='../ruru/traits/trait.Object.html#method.send' class='fnname'>send</a>(&amp;self, method: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, arguments: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a>&gt;) -&gt; <a class='struct' href='../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a></code></h4>
-<h4 id='method.as_any_object' class='method'><code>fn <a href='../ruru/traits/trait.Object.html#method.as_any_object' class='fnname'>as_any_object</a>(&amp;self) -&gt; <a class='struct' href='../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a></code></h4>
+<h4 id='method.to_any_object' class='method'><code>fn <a href='../ruru/traits/trait.Object.html#method.to_any_object' class='fnname'>to_any_object</a>(&amp;self) -&gt; <a class='struct' href='../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a></code></h4>
 <h4 id='method.instance_variable_get' class='method'><code>fn <a href='../ruru/traits/trait.Object.html#method.instance_variable_get' class='fnname'>instance_variable_get</a>(&amp;self, variable: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a></code></h4>
 <h4 id='method.instance_variable_set' class='method'><code>fn <a href='../ruru/traits/trait.Object.html#method.instance_variable_set' class='fnname'>instance_variable_set</a>&lt;T: <a class='trait' href='../ruru/traits/trait.Object.html' title='ruru::traits::Object'>Object</a>&gt;(&amp;mut self, variable: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, value: T) -&gt; <a class='struct' href='../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a></code></h4>
 </div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a></code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a></code></h4>
-<h4 id='method.clone_from' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
+<h4 id='method.clone_from' class='method'><span class="since">1.0.0</span><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
 </div></section>
     <section id='search' class="content hidden"></section>
 
@@ -168,7 +170,7 @@ using functions below.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>

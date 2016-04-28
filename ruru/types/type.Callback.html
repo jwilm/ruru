@@ -46,8 +46,8 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-615' class='srclink' href='../../src/ruru/types.rs.html#16' title='goto source code'>[src]</a></span></h1>
-<pre class='rust typedef'>type Callback&lt;I: <a class='trait' href='../../ruru/traits/trait.Object.html' title='ruru::traits::Object'>Object</a>, O: <a class='trait' href='../../ruru/traits/trait.Object.html' title='ruru::traits::Object'>Object</a>&gt; =  extern "C" fn(<a class='type' href='../../ruru/types/type.Argc.html' title='ruru::types::Argc'>Argc</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const <a class='struct' href='../../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a></a>, I) -&gt; O;</pre></section>
+        </span><a id='src-484' class='srclink' href='../../src/ruru/src/types.rs.html#13' title='goto source code'>[src]</a></span></h1>
+<pre class='rust typedef'>type Callback&lt;I, O&gt; =  extern "C" fn(<a class='type' href='../../ruru/types/type.Argc.html' title='ruru::types::Argc'>Argc</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const </a><a class='struct' href='../../ruru/struct.AnyObject.html' title='ruru::AnyObject'>AnyObject</a>, I) -&gt; O;</pre></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -90,7 +90,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
