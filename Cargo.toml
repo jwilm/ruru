@@ -13,4 +13,7 @@ license = "MIT"
 
 [dependencies]
 libc = "0.2.10"
-ruby-sys = "0.2"
+
+[dependencies.ruby-sys]
+git = "https://github.com/steveklabnik/ruby-sys.git"
+rev = "68c1406e9b358d4997f02bd332781daf9c0f5d29"
